@@ -1,30 +1,124 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import { useCart } from "@/components/cart/CartProvider";
+import { useSettings } from "@/components/settings/SettingsProvider";
+import { categories } from "@/data/catalog";
+
 export default function SiteHeader() {
+  const { count } = useCart();
+  const { settings } = useSettings();
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+
+  function search(event: FormEvent) {
+    event.preventDefault();
+    const value = query.trim();
+    router.push(value ? `/catalog?q=${encodeURIComponent(value)}` : "/catalog");
+  }
+
   return (
-    <header id="top" className="border-b border-[#e4e2d9] bg-[#fbfaf6]">
-      <div className="mx-auto flex min-h-[76px] max-w-7xl items-center justify-between gap-5 px-6 md:px-10 lg:px-16">
-        <a href="#top" aria-label="ShoppingPlace home" className="flex shrink-0 items-center gap-2.5">
-          <span aria-hidden="true" className="grid size-8 place-items-center bg-[#173c37] font-display text-lg text-[#e8b77e]">S</span>
-          <span className="font-semibold tracking-normal text-[#173c37]">ShoppingPlace</span>
-        </a>
-        <nav aria-label="Main navigation" className="hidden items-center gap-8 text-sm text-[#40564e] md:flex">
-          <a className="transition-colors hover:text-[#a36545]" href="#top">Home</a>
-          <a className="transition-colors hover:text-[#a36545]" href="#featured">Products</a>
-          <a className="transition-colors hover:text-[#a36545]" href="#categories">Categories</a>
-        </nav>
-        <div className="flex shrink-0 items-center gap-3 sm:gap-5">
-          <a href="#footer" className="text-sm font-medium text-[#40564e] transition-colors hover:text-[#a36545]">Login</a>
-          <a href="#featured" aria-label="Cart, empty demo" title="Cart demo" className="inline-flex min-h-10 items-center gap-2 border border-[#c9d0c7] px-3 text-sm font-medium text-[#173c37] transition-colors hover:border-[#173c37]">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className="size-4" stroke="currentColor" strokeWidth="1.7"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 1.9-1.4L21 9H6" /><circle cx="10" cy="20" r="1" /><circle cx="18" cy="20" r="1" /></svg>
-            <span className="hidden sm:inline">Cart</span>
-            <span className="grid size-5 place-items-center bg-[#e8b77e] text-[10px] text-[#173c37]">0</span>
-          </a>
+    <header className="sticky top-0 z-40 bg-white shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+      <div className="bg-[#f7f7f8] text-xs text-[#4b5563]">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 md:px-6">
+          <p className="min-w-0 truncate">Delivered across India · One payment</p>
+          <Link href="/apply" className="shrink-0 font-semibold text-[#1c1c1c] hover:text-[#178a45] sm:hidden">
+            Sell
+          </Link>
+          <Link href="/apply" className="hidden shrink-0 font-semibold text-[#1c1c1c] hover:text-[#178a45] sm:inline">
+            Apply as Agent
+          </Link>
         </div>
       </div>
-      <nav aria-label="Mobile navigation" className="flex justify-center gap-8 border-t border-[#e4e2d9] px-5 py-3 text-xs text-[#40564e] md:hidden">
-        <a href="#top">Home</a>
-        <a href="#featured">Products</a>
-        <a href="#categories">Categories</a>
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 md:gap-6 md:px-6">
+        <Link href="/" aria-label={`${settings.brandName} home`} className="shrink-0 text-lg font-bold tracking-tight text-[#1c1c1c] sm:text-xl">
+          {settings.brandName.toLowerCase()}
+        </Link>
+        <form onSubmit={search} className="hidden min-w-0 flex-1 md:block" role="search">
+          <label className="sr-only" htmlFor="site-search">
+            Search products
+          </label>
+          <div className="flex overflow-hidden rounded-full border border-[#e5e7eb] bg-[#f7f7f8] focus-within:border-[#1c1c1c] focus-within:bg-white">
+            <input
+              id="site-search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search products, brands, categories"
+              className="min-h-11 w-full bg-transparent px-5 text-sm outline-none"
+            />
+            <button type="submit" aria-label="Search" className="grid w-12 place-items-center text-[#1c1c1c]">
+              <SearchIcon />
+            </button>
+          </div>
+        </form>
+        <div className="ml-auto flex items-center gap-1 sm:gap-3">
+          <Link href="/login" className="px-1 text-sm font-medium text-[#1c1c1c] hover:text-[#178a45] sm:px-2">
+            Sign in
+          </Link>
+          <Link href="/account" className="hidden px-2 text-sm font-medium text-[#1c1c1c] hover:text-[#178a45] md:inline">
+            Account
+          </Link>
+          <Link href="/cart" aria-label={`Cart, ${count} items`} className="relative grid size-11 place-items-center rounded-full hover:bg-[#f3f4f6]">
+            <CartIcon />
+            <span className="absolute right-1 top-1 grid min-w-4 place-items-center rounded-full bg-[#e07a12] px-1 text-[10px] font-bold text-white">
+              {count}
+            </span>
+          </Link>
+        </div>
+      </div>
+      <form onSubmit={search} className="px-4 pb-3 md:hidden" role="search">
+        <label className="sr-only" htmlFor="site-search-mobile">
+          Search products
+        </label>
+        <div className="flex overflow-hidden rounded-full border border-[#e5e7eb] bg-[#f7f7f8] focus-within:border-[#1c1c1c] focus-within:bg-white">
+          <input
+            id="site-search-mobile"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search products"
+            className="min-h-11 w-full bg-transparent px-4 text-sm outline-none"
+          />
+          <button type="submit" aria-label="Search" className="grid w-11 shrink-0 place-items-center text-[#1c1c1c]">
+            <SearchIcon />
+          </button>
+        </div>
+      </form>
+      <nav aria-label="Categories" className="no-scrollbar mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-2.5 md:flex-wrap md:overflow-visible md:px-6">
+        <Link href="/catalog" className="shrink-0 rounded-full bg-[#1c1c1c] px-3.5 py-1.5 text-sm font-medium text-white">
+          All
+        </Link>
+        {categories.map((category) => (
+          <Link
+            key={category}
+            href={`/catalog?category=${encodeURIComponent(category)}`}
+            className="shrink-0 rounded-full bg-[#f3f4f6] px-3.5 py-1.5 text-sm font-medium text-[#374151] hover:bg-[#e8f6ee] hover:text-[#178a45]"
+          >
+            {category}
+          </Link>
+        ))}
       </nav>
     </header>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </svg>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+      <path d="M6 6h15l-1.5 9h-12z" />
+      <path d="M6 6L5 3H2" />
+      <circle cx="9" cy="20" r="1.2" fill="currentColor" />
+      <circle cx="18" cy="20" r="1.2" fill="currentColor" />
+    </svg>
   );
 }

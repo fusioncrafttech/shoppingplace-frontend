@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { CartProvider } from "@/components/cart/CartProvider";
+import { SettingsProvider } from "@/components/settings/SettingsProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,10 +14,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "ShoppingPlace | Good finds, all in one place",
+  title: {
+    default: "ShoppingPlace",
+    template: "%s · ShoppingPlace",
+  },
   description:
-    "Discover thoughtful finds across electronics, fashion, home, beauty, and sport at ShoppingPlace.",
+    "Shop platform goods and approved sellers in one cart. Apply to sell, or run the store from the owner console.",
 };
 
 export default function RootLayout({
@@ -26,9 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
       >
-        {children}
+        <SettingsProvider>
+          <CartProvider>{children}</CartProvider>
+        </SettingsProvider>
       </body>
     </html>
   );
