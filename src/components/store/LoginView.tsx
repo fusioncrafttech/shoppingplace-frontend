@@ -42,13 +42,13 @@ export default function LoginView() {
           Want to sell? <Link href="/apply" className="font-semibold text-[#a36545]">Apply as Agent</Link>
         </p>
       </div>
-      <aside className="h-fit bg-[#173c37] p-6 text-[#f6f1e6]">
+      <aside className="h-fit rounded-[28px] bg-[#123024] p-6 text-[#f6f1e6]">
         <p className="text-xs font-semibold tracking-[0.16em] text-[#e8b77e]">PREVIEW THE CONSOLES</p>
         <h2 className="mt-3 font-display text-3xl">Owner and agent</h2>
         <p className="mt-3 text-sm leading-6 text-[#d5ddd6]">These screens use sample records. No password is issued from the public application.</p>
         <div className="mt-6 grid gap-3">
-          <Link href="/admin" className="inline-flex min-h-11 items-center bg-[#e8b77e] px-4 text-sm font-semibold text-[#173c37]">Superadmin dashboard</Link>
-          <Link href="/agent" className="inline-flex min-h-11 items-center border border-white/30 px-4 text-sm font-semibold">Agent dashboard</Link>
+          <Link href="/admin" className="inline-flex min-h-11 items-center rounded-full bg-[#e8b77e] px-4 text-sm font-semibold text-[#173c37]">Superadmin dashboard</Link>
+          <Link href="/agent" className="inline-flex min-h-11 items-center rounded-full border border-white/30 px-4 text-sm font-semibold">Agent dashboard</Link>
           <Link href="/activate" className="text-sm font-semibold text-[#e8b77e]">Open a setup link</Link>
         </div>
       </aside>

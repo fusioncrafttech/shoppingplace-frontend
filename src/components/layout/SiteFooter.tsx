@@ -45,23 +45,23 @@ const columns = [
 export default function SiteFooter() {
   const { settings } = useSettings();
   return (
-    <footer className="border-t border-[#ece7df] bg-[#fbf7f2] text-[#1c1c1c]">
+    <footer className="mt-4 bg-[#123024] text-[#e7f2ea]">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 md:px-6 lg:grid-cols-5">
         <div>
-          <Link href="/" className="text-xl font-bold tracking-tight">
+          <Link href="/" className="text-xl font-bold tracking-tight text-white">
             {settings.brandName.toLowerCase()}
           </Link>
-          <p className="mt-3 max-w-xs text-sm leading-6 text-[#6b7280]">
+          <p className="mt-3 max-w-xs text-sm leading-6 text-[#b7cfc2]">
             Platform goods and approved sellers, paid once at checkout.
           </p>
         </div>
         {columns.map((column) => (
           <nav key={column.title} aria-label={column.title}>
-            <p className="text-sm font-semibold">{column.title}</p>
-            <ul className="mt-3 grid gap-2 text-sm text-[#4b5563]">
+            <p className="text-sm font-semibold text-white">{column.title}</p>
+            <ul className="mt-3 grid gap-2 text-sm text-[#b7cfc2]">
               {column.links.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="hover:text-[#178a45]">
+                  <Link href={link.href} className="hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -70,8 +70,8 @@ export default function SiteFooter() {
           </nav>
         ))}
       </div>
-      <div className="border-t border-[#ece7df]">
-        <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-[#6b7280] md:px-6">
+      <div className="border-t border-white/10">
+        <p className="mx-auto max-w-7xl px-4 py-4 text-xs text-[#8eaa9a] md:px-6">
           © {new Date().getFullYear()} {settings.brandName}. Interface preview with sample data.
         </p>
       </div>

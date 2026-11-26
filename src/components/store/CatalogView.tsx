@@ -78,10 +78,19 @@ export default function CatalogView() {
     setSort("relevance");
   }
 
+  const chips = [
+    category !== "All" ? { id: "category", label: category, clear: () => setCategory("All") } : null,
+    brand !== "All" ? { id: "brand", label: brand, clear: () => setBrand("All") } : null,
+    seller !== "All" ? { id: "seller", label: seller, clear: () => setSeller("All") } : null,
+    minRating !== "0" ? { id: "rating", label: `${minRating}★ and up`, clear: () => setMinRating("0") } : null,
+    minPrice || maxPrice ? { id: "price", label: `₹${minPrice || "0"}–${maxPrice || "any"}`, clear: () => { setMinPrice(""); setMaxPrice(""); } } : null,
+  ].filter((chip) => chip !== null);
+  const heading = query.trim() ? `Results for “${query.trim()}”` : category === "All" ? "All products" : category;
+
   return (
-    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-6 lg:grid-cols-[240px_1fr] lg:gap-8 lg:py-8">
+    <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:px-6 lg:grid-cols-[260px_1fr] lg:gap-8 lg:py-8">
       <div className="flex items-center justify-between lg:hidden">
-        <h1 className="text-2xl font-semibold">Catalog</h1>
+        <h1 className="font-display text-3xl">{heading}</h1>
         <button
           type="button"
           onClick={() => setFiltersOpen((open) => !open)}
@@ -91,16 +100,11 @@ export default function CatalogView() {
           {filtersOpen ? "Hide filters" : "Filters"}
         </button>
       </div>
-      <aside className={`${filtersOpen ? "block" : "hidden"} h-fit rounded-2xl border border-[#eee] bg-white p-4 lg:block`}>
-        <div className="mb-4 hidden items-center justify-between lg:flex">
-          <h1 className="text-2xl font-semibold">Catalog</h1>
-          <button type="button" onClick={clearFilters} className="text-xs font-semibold text-[#a36545]">
-            Clear
-          </button>
-        </div>
-        <div className="mb-3 flex justify-end lg:hidden">
-          <button type="button" onClick={clearFilters} className="text-xs font-semibold text-[#a36545]">
-            Clear
+      <aside className={`${filtersOpen ? "block" : "hidden"} h-fit rounded-3xl bg-white p-4 shadow-[0_1px_2px_rgba(28,28,28,0.04)] ring-1 ring-black/5 lg:sticky lg:top-52 lg:block`}>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#6b7280]">Filters</h2>
+          <button type="button" onClick={clearFilters} className="text-xs font-semibold text-[#178a45]">
+            Clear all
           </button>
         </div>
         <div className="grid gap-3">
@@ -156,10 +160,13 @@ export default function CatalogView() {
         </div>
       </aside>
       <div>
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <p className="text-sm text-[#58655d]">
-            {results.length} {results.length === 1 ? "product" : "products"}
-          </p>
+        <div className="mb-4 hidden items-end justify-between gap-3 lg:flex">
+          <div>
+            <h1 className="font-display text-4xl text-[#1c1c1c]">{heading}</h1>
+            <p className="mt-1 text-sm text-[#6b7280]">
+              {results.length} {results.length === 1 ? "product" : "products"}
+            </p>
+          </div>
           <label className="text-xs font-semibold text-[#40564e]">
             Sort
             <select value={sort} onChange={(event) => setSort(event.target.value)} className={`${inputClass} mt-1.5 w-full sm:min-w-48`}>
@@ -171,11 +178,42 @@ export default function CatalogView() {
             </select>
           </label>
         </div>
+        <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
+          <p className="text-sm text-[#6b7280]">
+            {results.length} {results.length === 1 ? "product" : "products"}
+          </p>
+          <label className="text-xs font-semibold text-[#40564e]">
+            <span className="sr-only">Sort</span>
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className={`${inputClass} w-full min-w-40`}>
+              {sorts.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {chips.length > 0 ? (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {chips.map((chip) => (
+              <button
+                key={chip.id}
+                type="button"
+                onClick={chip.clear}
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-[#e8f6ee] px-3 text-xs font-semibold text-[#12753b]"
+              >
+                {chip.label}
+                <span aria-hidden="true">×</span>
+                <span className="sr-only">Remove {chip.label}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
         {results.length === 0 ? (
-          <div className="border border-dashed border-[#d5d3c8] bg-[#f7f6f1] px-6 py-16 text-center">
+          <div className="rounded-3xl border border-dashed border-[#d5d3c8] bg-white px-6 py-16 text-center">
             <h2 className="font-display text-3xl">No matches</h2>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#58655d]">Nothing matches that search or those filters.</p>
-            <button type="button" onClick={clearFilters} className="mt-6 inline-flex min-h-11 items-center bg-[#173c37] px-5 text-sm font-semibold text-[#fbfaf6]">
+            <button type="button" onClick={clearFilters} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#178a45] px-5 text-sm font-semibold text-white">
               Clear filters
             </button>
           </div>

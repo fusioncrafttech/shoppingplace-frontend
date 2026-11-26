@@ -52,7 +52,7 @@ export default function CartView() {
               <div className="mt-3 divide-y divide-[#e4e2d9] border-y border-[#e4e2d9]">
                 {sellerLines.map(({ product, qty }) => (
                   <div key={product.slug} className="grid grid-cols-[72px_1fr] gap-3 py-4 sm:grid-cols-[88px_1fr] sm:gap-4">
-                    <div className={`relative aspect-square ${product.tone}`}>
+                    <div className={`relative aspect-square overflow-hidden rounded-2xl ${product.tone}`}>
                       {product.images[0] ? (
                         <Image src={product.images[0].src} alt="" fill sizes="88px" className="object-cover" />
                       ) : null}
@@ -89,7 +89,7 @@ export default function CartView() {
           ))}
         </div>
       </div>
-      <aside className="h-fit border border-[#e4e2d9] bg-[#f7f6f1] p-5">
+      <aside className="h-fit rounded-3xl bg-white p-5 shadow-[0_1px_2px_rgba(28,28,28,0.04)] ring-1 ring-black/5 lg:sticky lg:top-52">
         <p className="text-xs font-semibold tracking-[0.14em] text-[#a36545]">SUMMARY</p>
         <p className="mt-3 flex justify-between text-sm">
           <span>Merchandise</span>

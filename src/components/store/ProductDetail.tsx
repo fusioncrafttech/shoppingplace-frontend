@@ -48,25 +48,25 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 lg:px-10">
-      <p className="text-xs font-semibold tracking-[0.14em] text-[#a36545]">{product.category}</p>
-      <div className="mt-4 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:py-10">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#178a45]">{product.category}</p>
+      <div className="mt-4 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
-          <div className={`relative aspect-square overflow-hidden ${product.tone}`}>
+          <div className={`relative aspect-square overflow-hidden rounded-[28px] ${product.tone}`}>
             {photo ? <Image src={photo.src} alt={photo.alt} fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" /> : null}
           </div>
           {product.images.length > 1 ? (
             <div className="mt-3 flex gap-3">
               {product.images.map((item, index) => (
-                <button key={item.src} type="button" onClick={() => setImage(index)} className={`relative size-20 overflow-hidden border ${index === image ? "border-[#173c37]" : "border-transparent"}`} aria-label={`Show image ${index + 1}`}>
+                <button key={item.src} type="button" onClick={() => setImage(index)} className={`relative size-20 overflow-hidden rounded-2xl ring-2 ${index === image ? "ring-[#178a45]" : "ring-transparent"}`} aria-label={`Show image ${index + 1}`}>
                   <Image src={item.src} alt="" fill sizes="80px" className="object-cover" />
                 </button>
               ))}
             </div>
           ) : null}
         </div>
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#1c1c1c] sm:text-4xl">{product.name}</h1>
+        <div className="rounded-[28px] bg-white p-6 shadow-[0_1px_2px_rgba(28,28,28,0.04)] ring-1 ring-black/5 sm:p-8">
+          <h1 className="font-display text-4xl text-[#1c1c1c] sm:text-5xl">{product.name}</h1>
           <p className="mt-4 text-2xl font-semibold">{inr(product.price)}</p>
           {product.reviewCount > 0 ? (
             <p className="mt-2 text-sm text-[#58655d]">
@@ -76,7 +76,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             <p className="mt-2 text-sm text-[#58655d]">No reviews yet.</p>
           )}
           <p className="mt-5 max-w-xl text-sm leading-7 text-[#40564e]">{product.description}</p>
-          <div className="mt-6 border border-[#e4e2d9] bg-[#f3f1e9] p-4">
+          <div className="mt-6 rounded-2xl bg-[#f6f3ec] p-4">
             <p className="text-[10px] font-semibold tracking-[0.16em] text-[#a36545]">SOLD BY</p>
             <p className="mt-1 text-lg font-medium">{seller}</p>
             <p className="mt-1 text-sm leading-6 text-[#58655d]">
@@ -126,7 +126,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         </div>
       </div>
 
-      <section className="mt-16 grid gap-10 border-t border-[#e4e2d9] pt-10 lg:grid-cols-[1fr_320px]">
+      <section className="mt-12 grid gap-10 rounded-[28px] bg-white p-6 shadow-[0_1px_2px_rgba(28,28,28,0.04)] ring-1 ring-black/5 lg:grid-cols-[1fr_320px] sm:p-8">
         <div>
           <h2 className="font-display text-4xl">Reviews</h2>
           {reviews.length === 0 ? (
@@ -148,7 +148,7 @@ export default function ProductDetail({ product }: { product: Product }) {
             </div>
           )}
         </div>
-        <form onSubmit={leaveReview} className="h-fit border border-[#e4e2d9] bg-[#f7f6f1] p-4">
+        <form onSubmit={leaveReview} className="h-fit rounded-2xl bg-[#f6f3ec] p-4">
           <h3 className="font-display text-2xl">Leave a review</h3>
           <p className="mt-1 text-xs leading-5 text-[#6d7a72]">For customers who have received the product.</p>
           <label className="mt-4 block text-xs font-semibold">
